@@ -21,13 +21,13 @@ class mysql {
     }
 
     exec { "create-default-db":
-        unless => "/usr/bin/mysql -uroot -p$mysqlPassword database",
-        command => "/usr/bin/mysql -uroot -p$mysqlPassword -e 'create database `database`;'",
+        unless => "/usr/bin/mysql -uroot -p$mysqlPassword intengodev",
+        command => "/usr/bin/mysql -uroot -p$mysqlPassword -e 'create database `intengodev`;'",
         require => [Service["mysql"], Exec["set-mysql-password"]]
     }
 
     exec { "grant-default-db":
-        command => "/usr/bin/mysql -uroot -p$mysqlPassword -e 'grant all on `database`.* to `root@localhost`;'",
+        command => "/usr/bin/mysql -uroot -p$mysqlPassword -e 'grant all on `intengodev`.* to `root@localhost`;'",
         require => [Service["mysql"], Exec["create-default-db"]]
     }
 
