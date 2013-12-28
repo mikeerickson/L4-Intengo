@@ -23,7 +23,8 @@ class intengo {
 
 	exec { "Grab the intengo repo":
 		command => "git clone https://peb7268:erford7268@github.com/Infosurv/icev2.git /vagrant/www",
-		require => [Exec['clean www directory'], Package['php5'], Package['git-core']]
+		require => [Exec['clean www directory'], Package['php5'], Package['git-core']],
+		timeout => 900
 	}
 
 	exec { "update packages":
@@ -35,11 +36,20 @@ class intengo {
 
 	exec { "install packages":
 		cwd		=> "/var/www",
-        command => "/bin/sh -c 'sudo composer install'",
+        command => "/bin/sh -c 'composer install'",
         require => [Package['git-core'], Exec['update packages'], Exec['Grab the intengo repo']],
         onlyif 	=> [ "test -f /var/www/composer.json" ],
         creates => "/var/www/vendor/autoload.php",
-        timeout => 900
+        timeout => 900,
+        logoutput => true
+	}
+
+	exec { "migrate and seed":
+		cwd		=> "/var/www",
+		command => "/bin/sh -c 'php artisan migrate --seed'",
+		require => [Exec['Grab the intengo repo'], Exec['install packages']],
+		timeout => 900,
+		logoutput => true
 	}
 
 	file { '/var/www/app/storage':
