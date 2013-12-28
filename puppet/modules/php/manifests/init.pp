@@ -25,7 +25,11 @@ class php
             ensure  => latest,
             require => [Exec['apt-get update'], Package['python-software-properties']]
     }
-
+    exec{ "Install PHPUnit":
+        command => "wget http://phar.phpunit.de/phpunit.phar; chmod +x phpunit.phar; sudo mv phpunit.phar /usr/local/bin/phpunit;",
+        require => [Package['libreadline5'], Package['php-pear']],
+        timeout => 900
+    }
     # exec
     # {
     #     "sed -i 's|#|//|' /etc/php5/cli/conf.d/mcrypt.ini":

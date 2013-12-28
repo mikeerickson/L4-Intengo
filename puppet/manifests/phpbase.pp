@@ -22,6 +22,7 @@ include mysql       	#Installs the mysql package, sets default db and pw
 include phpmyadmin
 include redis
 include intengo 		#Intengo specific project setup. See module for details
+include shell 			#Sets some enviromental defaults ( Aliases and such )
 
 #include laravel4   	#Installs a clean laravel repo availible at localhost:8081
 #include post_install 	#Configures the ipfw local firewall on a mac to bypass port 8081
