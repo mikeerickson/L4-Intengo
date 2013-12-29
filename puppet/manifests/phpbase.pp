@@ -1,5 +1,5 @@
 #This is the default puppet file. It gits ran first and start the provisioning sequence.
-
+#Add your creds to the git pull if using the intengo module
 # Enable XDebug ("0" | "1")
 $use_xdebug = "0"
 
