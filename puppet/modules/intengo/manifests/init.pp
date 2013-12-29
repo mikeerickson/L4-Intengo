@@ -23,7 +23,7 @@ class intengo {
 	}
 
 	exec { "Grab the intengo repo":
-		command => "git clone https://peb7268:erford7268@github.com/Infosurv/icev2.git /vagrant/www",
+		command => "git clone https://github.com/Infosurv/icev2.git /vagrant/www",
 		require => [Exec['clean www directory'], Package['php5'], Package['git-core']],
 		timeout => 900
 	}
