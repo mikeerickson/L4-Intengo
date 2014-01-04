@@ -5,6 +5,10 @@ class apache {
         require => [Exec['apt-get update'], Package['php5'], Package['php5-dev'], Package['php5-cli']]
     }
 
+    package { "apache2-utils":
+        ensure => present,
+        require => [Package['apache2']]
+    }
     service { "apache2":
             ensure      => running,
             enable      => true,

@@ -1,12 +1,12 @@
 #Dont fortget to put your git creds in the git pull
 class intengo {
 
-	package { 'git-core':
-    	ensure => present,
-    }
+	# package { 'git-core':
+ #    	ensure => present,
+ #    }
 
    	exec { "install composer":
-	    command => 'curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin',
+	    command => 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin',
 	    require => Package['php5-cli'],
 	    unless => "[ -f /usr/local/bin/composer ]"
 	}
@@ -28,25 +28,25 @@ class intengo {
 		timeout => 900
 	}
 
-	exec { "update packages":
-        command => "/bin/sh -c 'cd /var/www/ && composer --verbose --prefer-dist update'",
-        require => [Package['git-core'], Package['php5'], Exec['global composer']],
-        onlyif => [ "test -f /var/www/composer.json", "test -d /var/www/vendor" ],
-        timeout => 900
-	}
+	# exec { "update packages":
+ #        command => "/bin/sh -c 'cd /var/www/ && composer --verbose --prefer-dist update'",
+ #        require => [Package['git-core'], Package['php5'], Exec['global composer']],
+ #        onlyif => [ "test -f /var/www/composer.json", "test -d /var/www/vendor" ],
+ #        timeout => 900
+	# }
 
 	exec { "install packages":
 		cwd		=> "/var/www",
-        command => "/bin/sh -c 'composer install'",
-        require => [Package['git-core'], Exec['update packages'], Exec['Grab the intengo repo']],
+        command => "/bin/sh -c 'cd /var/www && sudo composer install'",
+        require => [Package['git-core'], Exec['Grab the intengo repo']],
         #onlyif 	=> [ "test -f /var/www/composer.json" ],
-        #creates => "/var/www/vendor/autoload.php",
+        creates => "/var/www/vendor/autoload.php",
         timeout => 0
 	}
 
 	exec { "migrate and seed":
 		cwd		=> "/var/www",
-		command => "/bin/sh -c 'php artisan migrate --seed'",
+		command => "bash -c 'sudo php artisan migrate --seed'",
 		require => [Exec['Grab the intengo repo'], Exec['install packages']],
 		timeout => 900,
 		logoutput => true

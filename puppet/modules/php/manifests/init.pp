@@ -23,7 +23,7 @@ class php
     package {
         $packages:
             ensure  => latest,
-            require => [Exec['apt-get update'], Package['python-software-properties']]
+            require => [Exec['apt-get update'], Exec['php55 apt update']]
     }
     exec { "Install PHPUnit":
         command => "wget http://phar.phpunit.de/phpunit.phar; chmod +x phpunit.phar; sudo mv phpunit.phar /usr/local/bin/phpunit;",
@@ -53,11 +53,11 @@ class php
             owner   => root, group => root,
             notify  => Service['apache2'],
             content => template('php/cli.php.ini.erb'),
-            require => [Package['php5']],
+            require => [Package['php5'], Package['php5-cli']],
     }
 
     exec { "Remove the disable_functions values from the cli/php.ini":
         command => "sed -i 's/disable_functions = .*/disable_functions = /' /etc/php5/cli/php.ini",
-        require => [Package['php5'], Package['apache2']]
+        require => [Package['php5'], Package['apache2'], Package['php5-cli']]
     }
 }
