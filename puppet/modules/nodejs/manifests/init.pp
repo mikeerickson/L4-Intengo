@@ -9,19 +9,20 @@ class nodejs {
 	}
 
 	exec { "install npm":
-		command => "/bin/sh -c 'cd /usr/local/bin && curl https://npmjs.org/install.sh | sudo sh'",
+		command => "/bin/sh -c 'cd /usr/local/bin && curl https://npmjs.org/install.sh | sudo clean=no sh'",
 		require => [Exec['Install Node']],
-		timeout => 0
+		timeout => 0,
+		logoutput => true
 	}
 
 	exec { "install grunt cli":
-		command => "/bin/sh -c 'sudo npm install -g grunt-cli'",
+		command => "/bin/sh -c 'sudo /usr/local/bin/npm install -g grunt-cli'",
 		require => [Exec['install npm']],
 		timeout => 0
 	}
 
 	exec { "install dependencies":
-		command => "/bin/sh -c 'cd /vaw/www && sudo npm install'",
+		command => "/bin/sh -c 'cd /vaw/www && sudo /usr/local/bin/npm install'",
 		require => Exec['install grunt cli']
 	}
 }
