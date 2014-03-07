@@ -13,9 +13,9 @@ Vagrant.configure("2") do |config|
 	#config.vm.hostname = "laravel"
 
 	config.vm.provision :puppet do |puppet|
-		puppet.manifests_path 	= "/Users/peb7268/Desktop/dev/vagrant/testing/puppet/laravel-apache/puppet/manifests"
+		puppet.manifests_path 	= "/Users/peb7268/Desktop/dev/vagrant/projects/intengo/puppet/manifests"
         puppet.manifest_file  	= "init.pp"
-        puppet.module_path 		= "/Users/peb7268/Desktop/dev/vagrant/testing/puppet/laravel-apache/puppet/modules"
+        puppet.module_path 		= "/Users/peb7268/Desktop/dev/vagrant/projects/intengo/puppet/modules"
         #puppet.options 			= "--verbose --debug"
 	end
 end
